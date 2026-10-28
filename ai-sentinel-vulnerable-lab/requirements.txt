@@ -1,0 +1,5 @@
+# INTENTIONALLY VULNERABLE TEST DEPENDENCIES. Never use outside this lab.
+fastapi==0.115.12
+uvicorn==0.34.2
+requests==2.19.1
+PyYAML==5.1.2

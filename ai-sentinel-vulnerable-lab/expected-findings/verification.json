@@ -1,0 +1,18 @@
+{
+  "run_date": "2026-10-28",
+  "environment": {
+    "python": "3.13.14",
+    "pytest": "8.4.2",
+    "pip": "26.2.1",
+    "semgrep": null,
+    "pip_audit": null
+  },
+  "results": {
+    "pytest": "8 passed, 1 skipped; skip is the Semgrep CLI integration check because Semgrep is not installed",
+    "semgrep_config_yaml": "Parsed successfully with the environment's PyYAML; eight unique Python rules",
+    "semgrep_scan": "not run: semgrep executable unavailable",
+    "pip_audit_scan": "not run: pip-audit executable unavailable",
+    "confirmed_findings": []
+  },
+  "notes": "Dependency scanner detections and Semgrep matches remain unverified. The pinned scanner versions are in requirements-test.txt."
+}

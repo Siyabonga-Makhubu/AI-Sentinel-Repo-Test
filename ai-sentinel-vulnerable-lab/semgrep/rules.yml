@@ -1,0 +1,53 @@
+rules:
+  - id: lab.python.sql-injection
+    languages: [python]
+    message: User input is concatenated into SQL; use parameterized queries.
+    severity: ERROR
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-89", technology: [python, sqlite]}
+    pattern: $DB.execute($LEFT + $USER)
+  - id: lab.python.shell-injection
+    languages: [python]
+    message: Shell-enabled subprocess receives a constructed command; pass an argument list.
+    severity: ERROR
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-78", technology: [python]}
+    pattern: subprocess.run($LEFT + $USER, shell=True, ...)
+  - id: lab.python.unsafe-pickle
+    languages: [python]
+    message: pickle.loads can execute code while deserializing untrusted data.
+    severity: ERROR
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-502", technology: [python]}
+    pattern: pickle.loads(...)
+  - id: lab.python.unsafe-yaml
+    languages: [python]
+    message: Use yaml.safe_load for untrusted YAML.
+    severity: ERROR
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-502", technology: [python, yaml]}
+    pattern: yaml.load($DATA, Loader=yaml.Loader)
+  - id: lab.python.hardcoded-placeholder-secret
+    languages: [python]
+    message: Placeholder secret-shaped constant; verify no real credential is present.
+    severity: WARNING
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-798", technology: [python]}
+    patterns:
+      - pattern: $NAME = $VALUE
+      - metavariable-regex: {metavariable: $NAME, regex: "(?i).*(key|secret|token|password).*"}
+      - metavariable-regex: {metavariable: $VALUE, regex: "^[\"']FAKE_.*[\"']$"}
+  - id: lab.python.path-traversal
+    languages: [python]
+    message: User-controlled path is joined without containment validation.
+    severity: WARNING
+    metadata: {category: security, confidence: MEDIUM, cwe: "CWE-22", technology: [python]}
+    patterns:
+      - pattern: $PATH = os.path.join($BASE, $USER)
+  - id: lab.python.weak-hash
+    languages: [python]
+    message: MD5 is not suitable for password hashing; use a password hashing function.
+    severity: WARNING
+    metadata: {category: security, confidence: HIGH, cwe: "CWE-328", technology: [python]}
+    pattern: hashlib.md5(...)
+  - id: lab.python.information-disclosure
+    languages: [python]
+    message: Returning exception text can disclose internal details; return a generic error.
+    severity: WARNING
+    metadata: {category: security, confidence: MEDIUM, cwe: "CWE-209", technology: [python]}
+    pattern: 'return {"error": str($EXC)}'
